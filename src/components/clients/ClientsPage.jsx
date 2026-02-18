@@ -5,6 +5,7 @@ import ClientsTable from "./ClientsTable"
 import { loadClients, saveClients } from "../../utils/storage"
 import Header from "../layout/Header"
 import Modal from "../ui/Modal"
+import EditModal from "../ui/EditModal"
 
 export default function ClientsPage() {
 
@@ -21,6 +22,7 @@ useEffect(() => {
 }, [clients])
 
    const [isModalOpen, setIsModalOpen] = useState(false)
+   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
    function handleCreateClient(formData) {
   const newClient = {
@@ -99,12 +101,17 @@ function handleDeleteClient(clientId) {
         <>
         <Header onAddClientClick={() => setIsModalOpen(true)} />
         <ClientsSearch sortOption={sortOption} setSortOption={setSortOption} statusFilter={statusFilter} setStatusFilter={setStatusFilter} searchTerm={searchTerm} onSearchTermChange={setSearchTerm} />
-        <ClientsTable clients={sorted} deleteClient={handleDeleteClient} />
+        <ClientsTable onEditClientClick={() => setIsEditModalOpen(true)} clients={sorted} deleteClient={handleDeleteClient} />
          <Modal
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}
       onSubmit={handleCreateClient}
     />
+    <EditModal 
+    isEditModalOpen={isEditModalOpen}
+      setIsEditModalOpen={setIsEditModalOpen}
+      onSubmit={handleCreateClient}
+      />
         </>
     )
 }

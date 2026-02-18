@@ -1,6 +1,6 @@
 
 
-export default function ClientsTable({clients, deleteClient}){
+export default function ClientsTable({onEditClientClick, clients, deleteClient}){
 
     
 
@@ -12,7 +12,7 @@ export default function ClientsTable({clients, deleteClient}){
                             <td data-label="Date">{client.createdAt}</td>
                             <td>
                             <div>
-                                {/* <button type="button"><i className="fa-solid fa-pen-to-square"></i></button> */}
+                                <button type="button" onClick={onEditClientClick}><i className="fa-solid fa-pen-to-square"></i></button>
                                 <button type="button" onClick={() => deleteClient(client.id)} ><i className="fa-solid fa-trash-can"></i></button>
                             </div>
                             </td>
