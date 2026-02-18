@@ -1,39 +1,74 @@
+/* =========================
+   Base
+========================= */
+
+:root {
+  --sidebar-w: 256px;
+  --content-pad: 40px;
+
+  --green-900: #1a2e1a;
+  --green-800: #1f351f;
+
+  --accent: rgb(205 105 71);
+  --border: rgb(231 229 228);
+  --muted: rgb(134 147 124);
+  --bg-input: rgb(253 251 247);
+  --bg-soft: rgb(250 250 249);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 #root {
   width: 100%;
   font-family: "Plus Jakarta Sans", sans-serif;
   margin: 0;
 }
 
+/* =========================
+   Layout desktop
+========================= */
+
 .app-layout {
   display: flex; /* sidebar à gauche, content à droite */
-  min-height: 100vh;
+  min-height: 100dvh; /* mieux sur mobile que 100vh */
 }
 
 .page__inner {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-width: 0; /* évite overflow */
 }
 
 .card--small {
   max-width: 400px;
 }
-/* Sidebar */
+
+/* =========================
+   Sidebar (desktop)
+========================= */
 
 aside {
-  background-color: #1a2e1a;
-  width: 256px;
-
+  background-color: var(--green-900);
+  width: var(--sidebar-w);
   text-align: center;
-  height: 100vh;
+
+  /* important: 100vh casse sur mobile, donc on garde en desktop, et on override en responsive */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  flex: 0 0 var(--sidebar-w);
 }
 
 .logoSide {
   height: 40px;
   padding: 24px;
   font-weight: 700;
+  color: white;
 }
 
 .navSide {
@@ -42,6 +77,7 @@ aside {
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  padding-bottom: 16px;
 }
 
 .navSide a {
@@ -57,7 +93,7 @@ aside {
 }
 
 .navSide a:hover {
-  background-color: #1f351f;
+  background-color: var(--green-800);
 }
 
 .userSide {
@@ -68,45 +104,56 @@ aside {
   align-items: center;
   gap: 10px;
   margin: 40px auto;
+  color: white;
 }
+
 .userSide > img {
   width: 30px;
   border-radius: 999px;
 }
 
 .active {
-  color: rgb(205 105 71) !important;
+  color: var(--accent) !important;
   background-color: rgb(205 105 71 / 0.1);
 }
 
-/* Fin de la sidebar */
+/* =========================
+   Main content
+========================= */
 
 .main-content {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 40px;
+  padding: var(--content-pad);
 }
 
-/* header */
+/* =========================
+   Header
+========================= */
 
 header {
   width: 100%;
   color: black;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .headerRight {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .pageName > h2 {
   font-size: 30px;
+  margin: 0;
 }
 
 .headerRight > button {
@@ -116,46 +163,52 @@ header {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: rgb(205 105 71);
+  background-color: var(--accent);
   cursor: pointer;
   transition: border-color 0.25s;
   color: white;
+  white-space: nowrap;
 }
 
-/* fin header */
-
-/* Page  */
+/* =========================
+   Cards / page blocks
+========================= */
 
 .card {
   color: black;
   background-color: #ffffff;
   height: auto;
   padding: 20px;
-  border: 1px solid rgb(231 229 228);
+  border: 1px solid var(--border);
   border-radius: 10px;
+  min-width: 0;
 }
+
+/* =========================
+   Search / filters
+========================= */
 
 .searchBarRow {
   display: flex;
   align-items: center;
-  gap: 90px;
+  gap: 24px; /* 90px cassait vite */
+  flex-wrap: wrap;
 }
 
 .inputRow {
-  flex: 1 1 0%;
+  flex: 1 1 320px;
+  min-width: 220px;
+  position: relative; /* pour l'icône */
 }
 
-.sortingRow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
+/* On neutralise le positioning "hardcodé" */
 .fa-magnifying-glass {
   position: absolute;
-  left: 340px;
-  top: 170px;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted);
 }
 
 .inputRow > input {
@@ -166,29 +219,39 @@ header {
   padding-bottom: 12px;
   padding-right: 12px;
   padding-top: 12px;
-  border: 1px solid rgb(231 229 228);
-  background-color: rgb(253 251 247);
+  border: 1px solid var(--border);
+  background-color: var(--bg-input);
   border-radius: 0.75rem;
 }
 
 .inputRow > input:focus {
-  border-color: rgb(205 105 71);
+  border-color: var(--accent);
   outline: none;
+}
+
+.sortingRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex: 0 1 auto;
 }
 
 select {
   font-size: 0.875rem;
   line-height: 1.25rem;
   padding: 12px 40px 12px 12px;
-  border: 1px solid rgb(231 229 228);
-  background-color: rgb(253 251 247);
+  border: 1px solid var(--border);
+  background-color: var(--bg-input);
   border-radius: 0.75rem;
+  max-width: 100%;
 }
 
 .filtersRow {
   margin-top: 30px;
   display: flex;
-  gap: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .filtersRow > button {
@@ -202,24 +265,29 @@ select {
   cursor: pointer;
   transition: border-color 0.25s;
   color: black;
+  white-space: nowrap;
 }
 
 .btnActive {
-  background-color: rgb(205 105 71) !important;
+  background-color: var(--accent) !important;
   color: white !important;
 }
 
 .detailedFilters {
   background-color: transparent !important;
   border: none;
-  color: rgb(205 105 71) !important;
+  color: var(--accent) !important;
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  align-items: center;
 }
+
+/* =========================
+   Table
+========================= */
 
 table {
   width: 100%;
-
   border-collapse: collapse;
 }
 
@@ -238,30 +306,47 @@ thead tr {
 th,
 td {
   border: none;
-  padding: 30px;
+  padding: 22px;
 }
+
 th {
-  color: rgb(134 147 124);
+  color: var(--muted);
 }
+
 tr {
   text-align: left;
   height: 82px;
 }
 
 .titles {
-  background-color: rgb(250 250 249);
+  background-color: var(--bg-soft);
 }
 
 .card-no-padding {
   padding: 0px !important;
   overflow: hidden;
+  min-width: 0;
 }
 
+/* ✅ Sur petits écrans: la table doit pouvoir scroller horizontalement */
+.card-no-padding {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* On évite que la table se "compresse" trop : elle scroll plutôt */
+.card-no-padding table {
+  min-width: 720px;
+}
+
+/* Footer pagination */
 .totalDisplay {
   padding: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .pageNumbers > button {
@@ -272,11 +357,12 @@ tr {
 }
 
 .pageActuelle {
-  background-color: rgb(205 105 71) !important;
+  background-color: var(--accent) !important;
   color: white !important;
   border-radius: 5px;
 }
 
+/* Badges */
 .badge {
   border-radius: 10px;
   display: inline;
@@ -298,35 +384,42 @@ tr {
   background-color: rgb(245 245 244);
 }
 
+/* =========================
+   Modal
+========================= */
+
 .modal {
   display: none;
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  position: fixed;
+  z-index: 60;
+  padding: 24px 12px; /* mieux que padding-top fixe */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   background-color: rgba(0, 0, 0, 0.292);
   backdrop-filter: blur(10px);
 }
 
 .modalContent {
-  width: 446px;
-  height: 549px;
+  width: min(446px, 92vw);
+  height: auto;
+  max-height: 90dvh;
+  overflow: auto;
+
   background-color: white;
   margin: auto;
-  border-radius: 40px;
-  padding: 40px;
+  border-radius: 24px;
+  padding: 24px;
 }
 
 .modalTitle {
   display: flex;
   justify-content: space-between;
-  height: 56px;
+  height: auto;
   align-items: center;
+  gap: 12px;
 }
 
 .modalTitle > button {
@@ -335,27 +428,29 @@ tr {
   border-radius: 999px;
   border: none;
   font-size: 30px;
-  color: rgb(134 147 124);
+  color: var(--muted);
   background-color: transparent;
   cursor: pointer;
 }
 
 .modalTitleText {
   color: black;
+  margin: 0;
 }
+
+/* Form modal */
 .formInputRow {
   width: 100%;
-
-  height: 78px;
+  height: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 45px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .formInputRow > label {
   font-size: 10px;
-  color: rgb(134 147 124);
+  color: var(--muted);
 }
 
 .formInput {
@@ -368,13 +463,14 @@ tr {
 
 .formInput > span {
   position: absolute;
-  color: #1a2e1a;
+  color: var(--green-900);
   left: 10px;
 }
 
 .formInput > input::placeholder {
-  color: rgb(134 147 124);
+  color: var(--muted);
 }
+
 .formInput > input,
 .formInput > select {
   width: 100%;
@@ -382,25 +478,28 @@ tr {
   padding-left: 30px;
   border-radius: 10px;
   border: 1px solid rgb(245 245 244);
-  background-color: rgb(253 251 247);
+  background-color: var(--bg-input);
 }
 
 .formInput > input:focus {
   outline: none;
+  border-color: var(--accent);
 }
 
 .formBtns {
   width: 100%;
-  height: 50px;
+  height: auto;
   display: flex;
   justify-content: space-between;
-  margin-top: 70px;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .formBtns > button {
-  width: 45%;
+  flex: 1 1 180px;
   height: 50px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   display: flex;
   justify-content: center;
@@ -408,13 +507,288 @@ tr {
   gap: 10px;
   border-radius: 10px;
 }
+
 .whiteBtn {
   background-color: white;
-  border: 1px solid rgb(231 229 228);
+  border: 1px solid var(--border);
 }
 
 .colorBtn {
-  background-color: rgb(205 105 71);
+  background-color: var(--accent);
   border: none;
   color: white;
+}
+
+/* =========================
+   TABLET (<= 1024px)
+========================= */
+
+@media (max-width: 1024px) {
+  :root {
+    --content-pad: 24px;
+  }
+
+  /* Sidebar devient une topbar */
+  .app-layout {
+    flex-direction: column;
+  }
+
+  aside {
+    width: 100%;
+    height: auto;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 12px;
+    gap: 12px;
+  }
+
+  .logoSide {
+    padding: 12px;
+    height: auto;
+    white-space: nowrap;
+  }
+
+  .navSide {
+    flex: 1 1 auto;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
+    padding: 0 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .navSide a {
+    width: auto;
+    padding: 10px 12px;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .userSide {
+    margin: 0;
+    width: auto;
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+
+  .main-content {
+    padding: var(--content-pad);
+  }
+
+  th,
+  td {
+    padding: 18px;
+  }
+}
+
+/* =========================
+   MOBILE (<= 768px)
+========================= */
+
+@media (max-width: 768px) {
+  :root {
+    --content-pad: 16px;
+  }
+
+  .main-content {
+    padding: var(--content-pad);
+  }
+
+  /* Header: stack + bouton full width si besoin */
+  header {
+    align-items: flex-start;
+  }
+
+  .pageName > h2 {
+    font-size: 22px;
+  }
+
+  .headerRight {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .headerRight > button {
+    width: 100%;
+  }
+
+  /* Search: tout en colonne */
+  .searchBarRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .inputRow {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sortingRow {
+    justify-content: flex-start;
+  }
+
+  .filtersRow {
+    margin-top: 16px;
+    gap: 10px;
+  }
+
+  /* Table: conserve le scroll via .card-no-padding */
+  .card-no-padding table {
+    min-width: 680px;
+  }
+
+  /* Modal plus compacte */
+  .modalContent {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .formBtns > button {
+    flex: 1 1 100%;
+  }
+}
+
+/* =========================
+   SMALL MOBILE (<= 480px)
+========================= */
+
+@media (max-width: 480px) {
+  th,
+  td {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .navSide a {
+    padding: 10px 10px;
+  }
+}
+
+@media (max-width: 789px) {
+  /* on garde la table, mais on la transforme en cards */
+  .card-no-padding table,
+  .card-no-padding thead,
+  .card-no-padding tbody,
+  .card-no-padding th,
+  .card-no-padding td,
+  .card-no-padding tr {
+    display: block;
+    width: 100%;
+  }
+
+  .card-no-padding thead {
+    display: none; /* plus utile en cards */
+  }
+
+  .card-no-padding tbody {
+    padding: 12px;
+  }
+
+  .card-no-padding tr {
+    border: 1px solid rgb(231 229 228);
+    border-radius: 12px;
+    background: white;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    height: auto;
+  }
+
+  .card-no-padding td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border: none;
+    white-space: normal;
+  }
+
+  .card-no-padding td::before {
+    content: attr(data-label);
+    color: rgb(134 147 124);
+    font-size: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* =========================
+   MODE CARDS < 789px (override total)
+   Empêche tout overflow + force le shrink
+========================= */
+@media (max-width: 789px) {
+  /* Annule le mode "table scroll" */
+  .card-no-padding {
+    overflow-x: visible !important; /* plus de scroll horizontal en cards */
+  }
+
+  .card-no-padding table {
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important; /* annule min-width:720/760... */
+    max-width: 100% !important;
+  }
+
+  .card-no-padding thead {
+    display: none !important;
+  }
+
+  .card-no-padding tbody {
+    display: block;
+    width: 100%;
+    padding: 12px;
+  }
+
+  .card-no-padding tr {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0 0 12px 0;
+    padding: 10px 12px;
+    border: 1px solid rgb(231 229 228);
+    border-radius: 12px;
+    background: white;
+    overflow: hidden; /* évite qu’un enfant dépasse */
+  }
+
+  .card-no-padding td {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border: none;
+
+    white-space: normal !important; /* annule nowrap */
+    min-width: 0; /* clé pour shrink en flex */
+  }
+
+  /* Label (data-label) */
+  .card-no-padding td::before {
+    content: attr(data-label);
+    color: rgb(134 147 124);
+    font-size: 12px;
+    flex: 0 0 40%; /* garde une colonne label stable */
+  }
+
+  /* Valeur : peut se shrink + wrap (email long, etc.) */
+  .card-no-padding td > * {
+    min-width: 0;
+    max-width: 60%;
+  }
+
+  /* Si certaines valeurs sont du texte pur (pas dans un span), force le wrap */
+  .card-no-padding td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 }

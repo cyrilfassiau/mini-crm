@@ -6,14 +6,14 @@ export default function ClientsTable({clients, deleteClient}){
 
     const rows = clients.map((client) => (
                             <tr key={client.id}>
-                            <td>{client.name}</td>
-                            <td ><div className={`badge badge--${client.status}`}>{client.status}</div></td>
-                            <td>{client.email}</td>
-                            <td>{client.createdAt}</td>
+                            <td data-label="Nom">{client.name}</td>
+                            <td data-label="Statut"><div className={`badge badge--${client.status}`}>{client.status}</div></td>
+                            <td data-label="Email">{client.email}</td>
+                            <td data-label="Date">{client.createdAt}</td>
                             <td>
                             <div>
-                                <button type="button"><i className="fa-solid fa-pen-to-square"></i></button>
-                                <button type="button" onClick={() => deleteClient(client.id)} ><i className="fa-solid fa-ellipsis"></i></button>
+                                {/* <button type="button"><i className="fa-solid fa-pen-to-square"></i></button> */}
+                                <button type="button" onClick={() => deleteClient(client.id)} ><i className="fa-solid fa-trash-can"></i></button>
                             </div>
                             </td>
                             </tr>
