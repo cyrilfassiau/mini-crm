@@ -1,20 +1,21 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-export default function ClientsForm({ onSubmit, onCancel }) {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [status, setStatus] = useState("active")
+export default function ClientsForm({ onSubmit, onCancel, initialValues }) {
+  const [name, setName] = useState(initialValues?.name ?? "")
+  const [email, setEmail] = useState(initialValues?.email ?? "")
+  const [status, setStatus] = useState(initialValues?.status ?? "active")
+
+  useEffect(() => {
+    setName(initialValues?.name ?? "")
+    setEmail(initialValues?.email ?? "")
+    setStatus(initialValues?.status ?? "active")
+  }, [initialValues])
 
   function handleSubmit(e) {
     e.preventDefault()
-
-    // validation minimale
     if (!name.trim()) return
     if (!email.trim() || !email.includes("@")) return
-
     onSubmit({ name, email, status })
-
-    // reset (optionnel, mais agréable)
     setName("")
     setEmail("")
     setStatus("active")
@@ -36,7 +37,6 @@ export default function ClientsForm({ onSubmit, onCancel }) {
           />
         </div>
       </div>
-
       <div className="formInputRow">
         <label>Email</label>
         <div className="formInput">
@@ -51,7 +51,6 @@ export default function ClientsForm({ onSubmit, onCancel }) {
           />
         </div>
       </div>
-
       <div className="formInputRow">
         <label>Status</label>
         <div className="formInput">
@@ -68,12 +67,10 @@ export default function ClientsForm({ onSubmit, onCancel }) {
           </select>
         </div>
       </div>
-
       <div className="formBtns">
         <button type="button" className="whiteBtn" onClick={onCancel}>
           Cancel
         </button>
-
         <button type="submit" className="colorBtn">
           <span><i className="fa-solid fa-floppy-disk"></i></span> Save Client
         </button>
